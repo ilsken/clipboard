@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -19,12 +18,13 @@ module.exports = Clipboard;
  * @api private
  */
 
-function Clipboard(el) {
+function Clipboard(el, capture) {
   Emitter.call(this);
   this.el = el;
   this.onpaste = this.onpaste.bind(this);
   this.oncopy = this.oncopy.bind(this);
   this.oncut = this.oncut.bind(this);
+  this.capture = capture || false;
   this.bind();
 }
 
@@ -41,9 +41,9 @@ Emitter(Clipboard.prototype);
  */
 
 Clipboard.prototype.bind = function(){
-  this.el.addEventListener('paste', this.onpaste, false);
-  this.el.addEventListener('copy', this.oncopy, false);
-  this.el.addEventListener('cut', this.oncut, false);
+  this.el.addEventListener('paste', this.onpaste, this.capture);
+  this.el.addEventListener('copy', this.oncopy, this.capture);
+  this.el.addEventListener('cut', this.oncut, this.capture);
 };
 
 /**
